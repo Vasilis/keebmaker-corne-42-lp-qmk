@@ -52,9 +52,9 @@ fall through to the layer below.
 ,-------------------------------------------.     ,-------------------------------------------.
 | ESC | F11 | F12 |     |     |     |           |SHOT |HOME | END |     |     |     |
 |-----+-----+-----+-----+-----+-----|           |-----+-----+-----+-----+-----+-----|
-| CTL |RGB T|RGB M|HUE+ |     |     |           |DSK L|MCTRL|EXPOS|     |     |     |
+| CTL |RGB T|NEXT |HUE+ |SPD+ |VAL+ |           |DSK L|MCTRL|EXPOS|     |     |     |
 |-----+-----+-----+-----+-----+-----|           |-----+-----+-----+-----+-----+-----|
-| SFT |OLED |     |     |     |     |           |DSK R|PGDN |PGUP |     |     |     |
+| SFT |OLED |PREV |HUE- |SPD- |VAL- |           |DSK R|PGDN |PGUP |     |     |     |
 `-----------------------------------/           \-----------------------------------'
                   |     | GUI | SPC |           | ENT | BSP |     |
                   `-----------------'           `-----------------'
@@ -69,3 +69,8 @@ N + E  -> Enter        E + I  -> -           I + O  -> Backspace
 H + ,  -> :
 ```
 
+## RGB controls
+
+The Adjust layer provides on/off, next/previous mode, hue, animation speed, and
+brightness controls. Compiled modes are Solid Color, Breathing, and Rainbow
+Cycle.

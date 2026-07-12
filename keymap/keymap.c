@@ -83,16 +83,16 @@ const uint16_t PROGMEM keymaps[][MATRIX_ROWS][MATRIX_COLS] = {
     // ,-------------------------------------------.     ,-------------------------------------------.
     // | ESC | F11 | F12 |     |     |     |           |SHOT |HOME | END |     |     |     |
     // |-----+-----+-----+-----+-----+-----|           |-----+-----+-----+-----+-----+-----|
-    // | CTL |RGB T|RGB M|HUE+ |     |     |           |DSK L|MCTRL|EXPOS|     |     |     |
+    // | CTL |RGB T|NEXT |HUE+ |SPD+ |VAL+ |           |DSK L|MCTRL|EXPOS|     |     |     |
     // |-----+-----+-----+-----+-----+-----|           |-----+-----+-----+-----+-----+-----|
-    // | SFT |OLED |     |     |     |     |           |DSK R|PGDN |PGUP |     |     |     |
+    // | SFT |OLED |PREV |HUE- |SPD- |VAL- |           |DSK R|PGDN |PGUP |     |     |     |
     // `-----------------------------------/           \-----------------------------------'
     //                   |     | GUI | SPC |           | ENT | BSP |     |
     //                   `-----------------'           `-----------------'
     [ADJUST] = LAYOUT_split_3x6_3(
         KC_ESC,  KC_F11, KC_F12, _______, _______, _______,   MAC_SCREENSHOT, KC_HOME, KC_END, _______, _______, _______,
-        OS_LCTL, RM_TOGG, RM_NEXT, RM_HUEU, _______, _______, MAC_DESK_L, MAC_MISSION, MAC_EXPOSE, _______, _______, _______,
-        OS_LSFT, OLED_TOGGLE, _______, _______, _______, _______, MAC_DESK_R, KC_PGDN, KC_PGUP, _______, _______, _______,
+        OS_LCTL, RM_TOGG, RM_NEXT, RM_HUEU, RM_SPDU, RM_VALU, MAC_DESK_L, MAC_MISSION, MAC_EXPOSE, _______, _______, _______,
+        OS_LSFT, OLED_TOGGLE, RM_PREV, RM_HUED, RM_SPDD, RM_VALD, MAC_DESK_R, KC_PGDN, KC_PGUP, _______, _______, _______,
                                       _______, KC_LGUI, KC_SPC, KC_ENT, KC_BSPC, _______
     ),
 };
@@ -169,31 +169,49 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 #ifdef OLED_ENABLE
+extern char key_name;
+extern uint16_t last_keycode;
+extern uint8_t last_row;
+extern uint8_t last_col;
+
 bool oled_task_user(void) {
     // Let the keyboard-level Corne OLED task draw its stock logo on the slave.
     if (!is_keyboard_master()) {
         return true;
     }
 
-    oled_write_P(PSTR("KEEBMAKER\n\n"), false);
-    oled_write_P(PSTR("Layer\n"), false);
+    oled_write_P(PSTR("Layer: "), false);
     switch (get_highest_layer(layer_state)) {
         case COLEMAK:
             oled_write_ln_P(PSTR("COLEMAK"), false);
             break;
         case NUMBER:
-            oled_write_ln_P(PSTR("NUMBER"), false);
+            oled_write_ln_P(PSTR("NUMBER "), false);
             break;
         case SYMBOL:
-            oled_write_ln_P(PSTR("SYMBOL"), false);
+            oled_write_ln_P(PSTR("SYMBOL "), false);
             break;
         case ADJUST:
-            oled_write_ln_P(PSTR("ADJUST"), false);
+            oled_write_ln_P(PSTR("ADJUST "), false);
             break;
         default:
             oled_write_ln_P(PSTR("UNKNOWN"), false);
             break;
     }
+
+    oled_write_P(PSTR("Key: "), false);
+    oled_write_char('0' + last_row, false);
+    oled_write_P(PSTR("x"), false);
+    oled_write_char('0' + last_col, false);
+    oled_write_P(PSTR(" "), false);
+    oled_write_char(key_name, false);
+    oled_write_ln_P(PSTR("          "), false);
+
+    oled_write_P(PSTR("Code: "), false);
+    oled_write_ln(get_u16_str(last_keycode, ' '), false);
+
+    oled_write_P(PSTR("WPM: "), false);
+    oled_write_ln(get_u8_str(get_current_wpm(), '0'), false);
     return false;
 }
 #endif
