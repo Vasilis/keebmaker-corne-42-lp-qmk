@@ -52,9 +52,9 @@ fall through to the layer below.
 ,-------------------------------------------.     ,-------------------------------------------.
 | ESC | F11 | F12 |     |     |     |           |SHOT |HOME | END |     |     |     |
 |-----+-----+-----+-----+-----+-----|           |-----+-----+-----+-----+-----+-----|
-| CTL |RGB T|NEXT |HUE+ |SPD+ |VAL+ |           |DSK L|MCTRL|EXPOS|     |     |     |
+| CTL |RGB T|NEXT |HUE+ |VAL+ |VAL- |           |DSK L|MCTRL|EXPOS|     |     |     |
 |-----+-----+-----+-----+-----+-----|           |-----+-----+-----+-----+-----+-----|
-| SFT |OLED |PREV |HUE- |SPD- |VAL- |           |DSK R|PGDN |PGUP |     |     |     |
+| SFT |OLED |     |     |     |     |           |DSK R|PGDN |PGUP |     |     |     |
 `-----------------------------------/           \-----------------------------------'
                   |     | GUI | SPC |           | ENT | BSP |     |
                   `-----------------'           `-----------------'
@@ -71,6 +71,8 @@ H + ,  -> :
 
 ## RGB controls
 
-The Adjust layer provides on/off, next/previous mode, hue, animation speed, and
-brightness controls. Compiled modes are Solid Color, Breathing, and Rainbow
-Cycle.
+The Adjust layer provides on/off, next mode, hue, and brightness up/down.
+Compiled modes: Solid Color, Breathing, Rainbow Wave (left-to-right), Hue
+Cycle, and Reactive (keys light as you type). Maximum brightness is capped at
+80/255 to stay inside the USB-A power budget. `OLED` toggles the display on
+the half that presses it.
