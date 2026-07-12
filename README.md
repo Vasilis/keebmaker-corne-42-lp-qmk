@@ -3,8 +3,8 @@
 This QMK keymap ports the portable behavior of Vasilis' `corneish_zen.keymap`
 to the wired KeebMaker Corne 42 LP (`crkbd/rev1`, ATmega32U4/Pro Micro).
 
-The left OLED shows the active layer, last physical key, keycode, and current
-typing speed in WPM. The right OLED shows QMK's stock Corne logo. See
+The left OLED shows current WPM followed by QMK's stock Corne layer status and
+last-key log. The right OLED shows QMK's stock Corne logo. See
 [LAYOUTS.md](LAYOUTS.md) for complete ASCII maps of every layer and combo.
 
 RGB Matrix includes Solid Color, Breathing, and Rainbow Cycle modes. The Adjust
@@ -23,8 +23,8 @@ The expected output is `crkbd_rev1_keebmaker_zen.hex`.
 
 The delivered binary was built with QMK commit
 `a738fad372c1e72e10c47f560c8d167d233416ad`, AVR GCC 9.5.0, and avrdude 8.2.
-Its compiled size is 26,930/28,672 bytes (93%), and its SHA-256 is
-`23ed5c3bbfb11ebad1699a1c3bfa30740d7206f4cf6cf73e14806a45da2b2e42`.
+Its compiled size is 26,726/28,672 bytes (93%), and its SHA-256 is
+`792cb5d218b0d86df8e2e52023144f8115676a2a6bfda9d0d8d61cf7d9316f37`.
 
 ## Safe flashing
 

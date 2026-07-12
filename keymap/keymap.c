@@ -11,8 +11,8 @@ enum custom_keycodes {
     OLED_TOGGLE = SAFE_RANGE,
 };
 
-#define LOWER TL_LOWR
-#define RAISE TL_UPPR
+#define LOWER MO(NUMBER)
+#define RAISE MO(SYMBOL)
 
 #define GUI_COPY MT(MOD_LGUI, KC_C)
 #define RSFT_PASTE MT(MOD_RSFT, KC_V)
@@ -139,6 +139,10 @@ uint16_t get_combo_term(uint16_t combo_index, combo_t *combo) {
     return combo_index == COMBO_ESCAPE ? 30 : 40;
 }
 
+layer_state_t layer_state_set_user(layer_state_t state) {
+    return update_tri_layer_state(state, NUMBER, SYMBOL, ADJUST);
+}
+
 bool process_record_user(uint16_t keycode, keyrecord_t *record) {
     switch (keycode) {
         case GUI_COPY:
@@ -169,49 +173,14 @@ bool process_record_user(uint16_t keycode, keyrecord_t *record) {
 }
 
 #ifdef OLED_ENABLE
-extern char key_name;
-extern uint16_t last_keycode;
-extern uint8_t last_row;
-extern uint8_t last_col;
-
 bool oled_task_user(void) {
-    // Let the keyboard-level Corne OLED task draw its stock logo on the slave.
-    if (!is_keyboard_master()) {
-        return true;
+    // Prepend WPM on the master, then let Corne's stock OLED task render the
+    // active layer and its proven last-key log. The stock task draws the Corne
+    // logo on the slave half.
+    if (is_keyboard_master()) {
+        oled_write_P(PSTR("WPM: "), false);
+        oled_write_ln(get_u8_str(get_current_wpm(), '0'), false);
     }
-
-    oled_write_P(PSTR("Layer: "), false);
-    switch (get_highest_layer(layer_state)) {
-        case COLEMAK:
-            oled_write_ln_P(PSTR("COLEMAK"), false);
-            break;
-        case NUMBER:
-            oled_write_ln_P(PSTR("NUMBER "), false);
-            break;
-        case SYMBOL:
-            oled_write_ln_P(PSTR("SYMBOL "), false);
-            break;
-        case ADJUST:
-            oled_write_ln_P(PSTR("ADJUST "), false);
-            break;
-        default:
-            oled_write_ln_P(PSTR("UNKNOWN"), false);
-            break;
-    }
-
-    oled_write_P(PSTR("Key: "), false);
-    oled_write_char('0' + last_row, false);
-    oled_write_P(PSTR("x"), false);
-    oled_write_char('0' + last_col, false);
-    oled_write_P(PSTR(" "), false);
-    oled_write_char(key_name, false);
-    oled_write_ln_P(PSTR("          "), false);
-
-    oled_write_P(PSTR("Code: "), false);
-    oled_write_ln(get_u16_str(last_keycode, ' '), false);
-
-    oled_write_P(PSTR("WPM: "), false);
-    oled_write_ln(get_u8_str(get_current_wpm(), '0'), false);
-    return false;
+    return true;
 }
 #endif
